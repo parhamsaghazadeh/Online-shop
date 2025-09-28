@@ -13,3 +13,8 @@ create table if not exists gender(
     id int auto_increment primary key ,
     title varchar(100)
 );
+
+create table if not exists role (
+    id int auto_increment primary key ,
+    title varchar(100)
+);
