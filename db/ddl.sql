@@ -61,3 +61,14 @@ create table if not exists digital_product(
     product_id int,
     constraint FK_digital_product foreign key (product_id) references product_categories(id)
 );
+
+create table if not exists Home_Appliances (
+    id int auto_increment primary key ,
+    name varchar(100),
+    year_of_manufacture timestamp,
+    brand varchar(100),
+    made_in varchar(100),
+    price varchar(100),
+    product_id int,
+    constraint FK_home_product foreign key (product_id) references product_categories(id)
+);
