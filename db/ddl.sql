@@ -32,3 +32,8 @@ create table if not exists person (
     constraint FK_person_gender foreign key (gender_id) references gender(id),
     constraint Fk_person_role foreign key (role_id) references role(id)
 );
+
+create table if not exists product_categories(
+    id int auto_increment not null primary key ,
+    title varchar(100)
+);
