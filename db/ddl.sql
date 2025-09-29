@@ -45,6 +45,7 @@ create table if not exists stationery(
     brand varchar(100),
     made_in varchar(100),
     Product_design varchar(100),
+    price decimal(10,3),
     product_id int,
     constraint FK_stationery_product foreign key (product_id) references product_categories(id)
 );
