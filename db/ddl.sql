@@ -72,3 +72,15 @@ create table if not exists Home_Appliances (
     product_id int,
     constraint FK_home_product foreign key (product_id) references product_categories(id)
 );
+
+create table if not exists cars (
+    id int auto_increment primary key ,
+    name varchar(100),
+    year_of_manufacture timestamp,
+    brand varchar(100),
+    model varchar(100),
+    made_in varchar(100),
+    price decimal(10,3),
+    product_id int,
+    constraint Fk_cars_product foreign key (product_id) references product_categories(id)
+);
