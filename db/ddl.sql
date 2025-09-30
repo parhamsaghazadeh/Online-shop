@@ -97,3 +97,13 @@ create table if not exists order_registration(
     constraint FK_order_person foreign key (person_id) references person(id),
     constraint FK_order_product foreign key (product_id) references product_categories(id)
 );
+
+create table if not exists product_registration(
+    id int auto_increment primary key ,
+    person_id int,
+    product_id int,
+    name_product varchar(100),
+    registration_date timestamp,
+    constraint FK_person_registration foreign key (person_id) references person(id),
+    constraint FK_product_registration foreign key (product_id) references product_categories(id)
+);
