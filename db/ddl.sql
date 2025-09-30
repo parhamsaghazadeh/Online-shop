@@ -112,3 +112,13 @@ create table if not exists location(
     id int auto_increment primary key ,
     title varchar(100)
 );
+
+create table if not exists shop_location(
+    id int auto_increment primary key ,
+    registration_id int,
+    location_id int,
+    location varchar(100),
+    open_time timestamp,
+    constraint Fk_shop_registration foreign key (registration_id) references order_registration(id),
+    constraint FK_shop_location foreign key (location_id) references location(id)
+);
