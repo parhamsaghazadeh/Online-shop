@@ -107,3 +107,8 @@ create table if not exists product_registration(
     constraint FK_person_registration foreign key (person_id) references person(id),
     constraint FK_product_registration foreign key (product_id) references product_categories(id)
 );
+
+create table if not exists location(
+    id int auto_increment primary key ,
+    title varchar(100)
+);
