@@ -24,7 +24,7 @@ create table if not exists person (
     name varchar(100),
     lastname varchar(100),
     birthdate timestamp,
-    national int,
+    national_id varchar(30),
     user_id int,
     gender_id int,
     role_id int ,
