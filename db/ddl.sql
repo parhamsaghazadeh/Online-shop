@@ -68,7 +68,7 @@ create table if not exists Home_Appliances (
     year_of_manufacture date,
     brand varchar(100),
     made_in varchar(100),
-    price varchar(100),
+    price decimal(10,3) ,
     product_id int,
     constraint FK_home_product foreign key (product_id) references product_categories(id)
 );
