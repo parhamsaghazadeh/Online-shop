@@ -103,7 +103,7 @@ create table if not exists product_registration(
     person_id int,
     product_id int,
     name_product varchar(100),
-    registration_date timestamp,
+    registration_date date,
     constraint FK_person_registration foreign key (person_id) references person(id),
     constraint FK_product_registration foreign key (product_id) references product_categories(id)
 );
@@ -118,7 +118,7 @@ create table if not exists shop_location(
     registration_id int,
     location_id int,
     location varchar(100),
-    open_time timestamp,
+    open_time date,
     constraint Fk_shop_registration foreign key (registration_id) references order_registration(id),
     constraint FK_shop_location foreign key (location_id) references location(id)
 );
