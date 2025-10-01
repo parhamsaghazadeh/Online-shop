@@ -93,7 +93,7 @@ create table if not exists order_registration(
     brand varchar(100),
     price decimal(10,3),
     pay_with varchar(100),
-    payment_date timestamp,
+    payment_date date,
     constraint FK_order_person foreign key (person_id) references person(id),
     constraint FK_order_product foreign key (product_id) references product_categories(id)
 );
