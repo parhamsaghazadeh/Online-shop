@@ -41,7 +41,7 @@ create table if not exists product_categories(
 create table if not exists stationery(
     id int auto_increment primary key ,
     name varchar(100),
-    year_of_manufacture timestamp,
+    year_of_manufacture date,
     brand varchar(100),
     made_in varchar(100),
     Product_design varchar(100),
