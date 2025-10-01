@@ -38,52 +38,6 @@ create table if not exists product_categories(
     title varchar(100)
 );
 
-create table if not exists stationery(
-    id int auto_increment primary key ,
-    name varchar(100),
-    year_of_manufacture date,
-    brand varchar(100),
-    made_in varchar(100),
-    Product_design varchar(100),
-    price decimal(10,3),
-    product_id int,
-    constraint FK_stationery_product foreign key (product_id) references product_categories(id)
-);
-
-create table if not exists digital_product(
-    id int auto_increment primary key ,
-    name varchar(100),
-    year_of_manufacture date,
-    brand varchar(100),
-    model varchar(100),
-    made_in varchar(100),
-    price decimal(10,3),
-    product_id int,
-    constraint FK_digital_product foreign key (product_id) references product_categories(id)
-);
-
-create table if not exists Home_Appliances (
-    id int auto_increment primary key ,
-    name varchar(100),
-    year_of_manufacture date,
-    brand varchar(100),
-    made_in varchar(100),
-    price decimal(10,3) ,
-    product_id int,
-    constraint FK_home_product foreign key (product_id) references product_categories(id)
-);
-
-create table if not exists cars (
-    id int auto_increment primary key ,
-    name varchar(100),
-    year_of_manufacture date,
-    brand varchar(100),
-    model varchar(100),
-    made_in varchar(100),
-    price decimal(10,3),
-    product_id int,
-    constraint Fk_cars_product foreign key (product_id) references product_categories(id)
-);
 
 create table if not exists order_registration(
     id int auto_increment primary key,
