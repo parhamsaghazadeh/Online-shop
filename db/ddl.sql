@@ -65,7 +65,7 @@ create table if not exists digital_product(
 create table if not exists Home_Appliances (
     id int auto_increment primary key ,
     name varchar(100),
-    year_of_manufacture timestamp,
+    year_of_manufacture date,
     brand varchar(100),
     made_in varchar(100),
     price varchar(100),
@@ -76,7 +76,7 @@ create table if not exists Home_Appliances (
 create table if not exists cars (
     id int auto_increment primary key ,
     name varchar(100),
-    year_of_manufacture timestamp,
+    year_of_manufacture date,
     brand varchar(100),
     model varchar(100),
     made_in varchar(100),
