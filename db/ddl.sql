@@ -128,7 +128,7 @@ create table if not exists wareHouse_location(
     registration_id int,
     location_id int,
     location varchar(100),
-    open_time timestamp,
+    open_time date,
     constraint Fk_wareHouse_registration foreign key (registration_id) references order_registration(id),
     constraint FK_wareHouse_location foreign key (location_id) references location(id)
 );
