@@ -89,7 +89,9 @@ create table if not exists product_registration(
 create table if not exists location
 (
     id    int auto_increment primary key,
-    title varchar(100)
+    title varchar(100),
+    type varchar(100),
+    open_time time
 );
 
 create table if not exists shop_location
