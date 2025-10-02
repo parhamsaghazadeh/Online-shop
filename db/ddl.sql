@@ -72,32 +72,34 @@ create table if not exists orders_item
     order_id   int,
     product_id int,
     quantity   int default 1,
-    price      decimal(100, 2),
+    price      decimal(10, 2),
     constraint FK_item_order foreign key (order_id) references orders (id),
     constraint FK_item_product foreign key (product_id) references product (id)
 );
 
-create table if not exists product_registration(
-    id int auto_increment not null primary key,
-    person_id int,
-    product_id int,
+create table if not exists product_registration
+(
+    id                int auto_increment not null primary key,
+    person_id         int,
+    product_id        int,
     registration_date timestamp,
-    constraint FK_person_registration foreign key (person_id) references person(id),
-    constraint Fk_product_registration foreign key (product_id) references product(id)
+    constraint FK_person_registration foreign key (person_id) references person (id),
+    constraint Fk_product_registration foreign key (product_id) references product (id)
 );
 
 create table if not exists location
 (
-    id    int auto_increment primary key,
-    title varchar(100),
-    type varchar(100),
+    id        int auto_increment primary key,
+    title     varchar(100),
+    type      varchar(100),
     open_time time
 );
 
-create table if not exists order_location(
-    id int auto_increment not null primary key ,
-    order_id int ,
+create table if not exists order_location
+(
+    id          int auto_increment not null primary key,
+    order_id    int,
     location_id int,
-    constraint Fk_order_location foreign key (order_id) references orders(id),
-    constraint FK_order_location_order foreign key (location_id) references location(id)
+    constraint Fk_order_location foreign key (order_id) references orders (id),
+    constraint FK_order_location_order foreign key (location_id) references location (id)
 );
