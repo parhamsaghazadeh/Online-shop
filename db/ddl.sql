@@ -57,7 +57,25 @@ create table if not exists product
     constraint FK_product_category foreign key (category_id) references categories (id)
 );
 
+create table if not exists orders
+(
+    id             int auto_increment not null primary key,
+    person_id      int,
+    payment_method varchar(100),
+    payment_date   timestamp,
+    constraint Fk_orders_person foreign key (person_id) references person (id)
+);
 
+create table if not exists orders_item
+(
+    id         int auto_increment not null primary key,
+    order_id   int,
+    product_id int,
+    quantity   int default 1,
+    price      decimal(100, 2),
+    constraint FK_item_order foreign key (order_id) references orders (id),
+    constraint FK_item_product foreign key (product_id) references product (id)
+);
 
 create table if not exists location
 (
