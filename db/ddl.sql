@@ -93,3 +93,11 @@ create table if not exists location
     type varchar(100),
     open_time time
 );
+
+create table if not exists order_location(
+    id int auto_increment not null primary key ,
+    order_id int ,
+    location_id int,
+    constraint Fk_order_location foreign key (order_id) references orders(id),
+    constraint FK_order_location_order foreign key (location_id) references location(id)
+);
