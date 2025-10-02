@@ -57,28 +57,7 @@ create table if not exists product
     constraint FK_product_category foreign key (category_id) references categories (id)
 );
 
-create table if not exists order_registration
-(
-    id           int auto_increment primary key,
-    name         varchar(100),
-    person_id    int,
-    product_id   int,
-    brand        varchar(100),
-    price        decimal(10, 3),
-    pay_with     varchar(100),
-    payment_date date,
-    constraint FK_order_person foreign key (person_id) references person (id)
-);
 
-create table if not exists product_registration
-(
-    id                int auto_increment primary key,
-    person_id         int,
-    product_id        int,
-    name_product      varchar(100),
-    registration_date date,
-    constraint FK_person_registration foreign key (person_id) references person (id)
-);
 
 create table if not exists location
 (
@@ -93,7 +72,6 @@ create table if not exists shop_location
     location_id     int,
     location        varchar(100),
     open_time       date,
-    constraint Fk_shop_registration foreign key (registration_id) references order_registration (id),
     constraint FK_shop_location foreign key (location_id) references location (id)
 );
 
@@ -104,6 +82,5 @@ create table if not exists wareHouse_location
     location_id     int,
     location        varchar(100),
     open_time       date,
-    constraint Fk_wareHouse_registration foreign key (registration_id) references order_registration (id),
     constraint FK_wareHouse_location foreign key (location_id) references location (id)
 );
