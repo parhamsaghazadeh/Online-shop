@@ -33,11 +33,6 @@ create table if not exists person (
     constraint Fk_person_role foreign key (role_id) references role(id)
 );
 
-create table if not exists product_categories(
-    id int auto_increment not null primary key ,
-    title varchar(100)
-);
-
 
 create table if not exists order_registration(
     id int auto_increment primary key,
