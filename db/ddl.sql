@@ -93,23 +93,3 @@ create table if not exists location
     type varchar(100),
     open_time time
 );
-
-create table if not exists shop_location
-(
-    id              int auto_increment primary key,
-    registration_id int,
-    location_id     int,
-    location        varchar(100),
-    open_time       date,
-    constraint FK_shop_location foreign key (location_id) references location (id)
-);
-
-create table if not exists wareHouse_location
-(
-    id              int auto_increment primary key,
-    registration_id int,
-    location_id     int,
-    location        varchar(100),
-    open_time       date,
-    constraint FK_wareHouse_location foreign key (location_id) references location (id)
-);
