@@ -7,3 +7,23 @@
         <artifactId>spring-boot-starter-parent</artifactId>
         <version>3.1.4</version>
     </parent>
+    <groupId>com.parham</groupId>
+    <artifactId>spring-boot</artifactId>
+    <version>1.0</version>
+    <name> parham online shop</name>
+
+    <properties>
+            <java.version>21</java.version>
+    </properties>
+
+    <dependencies>
+        <!-- spring Boot starters -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-web</artifactId>
+            <version>3.1.4</version>
+        </dependency>
+    </dependencies>
+
+
+</project>
