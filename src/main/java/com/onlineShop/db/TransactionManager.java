@@ -1,4 +1,4 @@
-package db;
+package com.onlineShop.db;
 import java.sql.Connection;
 import java.sql.SQLException;
 

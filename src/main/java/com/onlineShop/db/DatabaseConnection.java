@@ -1,4 +1,4 @@
-package db;
+package com.onlineShop.db;
 
 import lombok.extern.slf4j.Slf4j;
 

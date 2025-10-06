@@ -1,4 +1,4 @@
-package db;
+package com.onlineShop.db;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
