@@ -142,4 +142,29 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteUser(@RequestParam Long id) {
+        log.info("deleteUser {}", id);
+        try (Connection connection = DatabaseConnection.getConnection()){
+            TransactionManager transactionManager = new TransactionManager(connection);
+
+            CrudRepository<User> userRepository = new CrudRepository<>(connection,"users",null);
+
+            transactionManager.beginTransaction();
+            int row = userRepository.delete("DELETE FROM users WHERE id = ?",id);
+            transactionManager.commitTransaction();
+
+            if (row == 0){
+                log.warn("user request: delete failed , not found user with id {} ", id);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            log.info("user request: delete successful{}",id);
+            return ResponseEntity.ok("user delete successfully");
+        }catch (Exception e ){
+            log.error("deleteUser error{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
