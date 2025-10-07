@@ -48,4 +48,27 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<UserModel>> searchUser(@RequestParam Long id) {
+        log.info("searchUser {}", id);
+        ArrayList<UserModel> userModel;
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            ResultSetHandler<User> userHandler = resultSet -> new User(
+                    resultSet.getLong("id"),
+                    resultSet.getString("username"),
+                    resultSet.getString("password")
+            );
+
+            CrudRepository<User> userRepository = new CrudRepository<>(connection, "users", userHandler);
+
+            List<User> users = userRepository.readAll("SELECT * FROM users where username WHERE id = ?", id);
+            userModel = users.stream().map(converter::converterToUser).peek(System.out::println)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            return ResponseEntity.ok(userModel);
+        } catch (Exception e) {
+            log.error("searchUser error{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
