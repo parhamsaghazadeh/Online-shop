@@ -19,6 +19,7 @@ import java.sql.Connection;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RestController
@@ -98,6 +99,47 @@ public class UserController {
             } else {
                 return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
             }
+        }
+    }
+
+    @PutMapping
+    public ResponseEntity<UserModel> updateUser(@RequestBody UserModel userModel) {
+        log.info("updateUser {}", userModel);
+        try (Connection connection = DatabaseConnection.getConnection()){
+            TransactionManager transactionManager = new TransactionManager(connection);
+            ResultSetHandler<User> userHandler = resultSet -> new User(
+                    resultSet.getLong("id"),
+                    resultSet.getString("username"),
+                    resultSet.getString("password")
+            );
+
+            CrudRepository<User> userRepository = new CrudRepository<>(connection, "users", userHandler);
+
+            transactionManager.beginTransaction();
+            int row = userRepository.update(
+                    "UPDATE users SET username = ? , password = ? WHERE id = ?",
+                    userModel.getUsername(),
+                    userModel.getPassword(),
+                    userModel.getId()
+            );
+            transactionManager.commitTransaction();
+
+            if (row == 0){
+                log.warn("user request: update failed , not found user with id {} ", userModel.getId());
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            return Optional.ofNullable(userRepository.read("SELECT * FROM users WHERE id = ?", userModel.getId()))
+                    .map(converter::converterToUser)
+                    .map(updated-> {log.info("user request:update successful{}",updated);
+                    return ResponseEntity.ok(updated);
+                    })
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+
+
+        }catch (Exception e) {
+            log.error("updateUser error{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }
