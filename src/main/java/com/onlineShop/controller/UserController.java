@@ -71,4 +71,33 @@ public class UserController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
+
+    @PostMapping
+    public ResponseEntity<UserModel> createUser(@RequestBody UserModel userModel) {
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            TransactionManager transactionManager = new TransactionManager(connection);
+            ResultSetHandler<User> userHandler = resultSet -> new User(
+                    resultSet.getLong("id"),
+                    resultSet.getString("username"),
+                    resultSet.getString("password")
+            );
+
+            CrudRepository<User> userRepository = new CrudRepository<>(connection, "users", userHandler);
+
+            transactionManager.beginTransaction();
+            int value = userRepository.create("INSERT INTO users(username,password) VALUES (?,?)", userModel.getId(), userModel.getUsername(), userModel.getPassword());
+            transactionManager.commitTransaction();
+
+            User user = userRepository.read("SELECT * FROM users WHERE id = ?", value);
+            userModel = converter.converterToUser(user);
+            log.info("createUser {}", userModel);
+            return ResponseEntity.ok(userModel);
+        } catch (Exception e) {
+            if (e instanceof SQLIntegrityConstraintViolationException) {
+                return ResponseEntity.status(HttpStatus.CONFLICT).build();
+            } else {
+                return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+            }
+        }
+    }
 }
