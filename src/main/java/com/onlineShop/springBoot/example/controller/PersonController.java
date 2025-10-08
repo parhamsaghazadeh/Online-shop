@@ -84,7 +84,7 @@ public class PersonController {
     public ResponseEntity<PersonModel> addPerson(@RequestBody PersonModel personModel) {
         log.info("Add person {}", personModel);
         ArrayList<PersonModel> personModels;
-        try (Connection connection = DatabaseConnection.getConnection()){
+        try (Connection connection = DatabaseConnection.getConnection()) {
             TransactionManager transactionManager = new TransactionManager(connection);
             ResultSetHandler<Person> personHandler;
             personHandler = resultSet -> new Person(
@@ -102,12 +102,12 @@ public class PersonController {
 
             transactionManager.commitTransaction();
             int value = personRepository.create("INSERT INTO person (name,lastname,birthdate,national_id,user_id,gender_id,role_id) VALUES (?,?,?,?,?,?,?)",
-                    personModel.getName(),personModel.getLastname(),personModel.getBirthdate(),personModel.getNational_id(),personModel.getUser_id(),personModel.getGender_id(),personModel.getRole_id());
+                    personModel.getName(), personModel.getLastname(), personModel.getBirthdate(), personModel.getNational_id(), personModel.getUser_id(), personModel.getGender_id(), personModel.getRole_id());
             transactionManager.beginTransaction();
             Person person = personRepository.read("SELECT * FROM person WHERE id = ?", value);
             personModel = converter.converterToPerson(person);
             return ResponseEntity.ok(personModel);
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("Error adding person {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
@@ -117,7 +117,7 @@ public class PersonController {
     public ResponseEntity<PersonModel> updatePerson(@RequestBody PersonModel personModel) {
         log.info("Update person {}", personModel);
         ArrayList<PersonModel> personModels;
-        try (Connection connection = DatabaseConnection.getConnection()){
+        try (Connection connection = DatabaseConnection.getConnection()) {
             TransactionManager transactionManager = new TransactionManager(connection);
             ResultSetHandler<Person> personHandler = resultSet -> new Person(
                     resultSet.getLong("id"),
@@ -147,20 +147,46 @@ public class PersonController {
             );
             transactionManager.beginTransaction();
 
-            if (row == 0){
+            if (row == 0) {
                 log.warn("person request : update failed , not found {}", personModel.getId());
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
 
-            return Optional.ofNullable(personRepository.read("SELECT * FROM person WHERE id = ?",personModel.getId()))
+            return Optional.ofNullable(personRepository.read("SELECT * FROM person WHERE id = ?", personModel.getId()))
                     .map(converter::converterToPerson)
-                    .map(updatePerson->{log.info("update person successful {}", updatePerson);
-                    return ResponseEntity.ok(updatePerson);
+                    .map(updatePerson -> {
+                        log.info("update person successful {}", updatePerson);
+                        return ResponseEntity.ok(updatePerson);
                     })
-                    .orElseGet(()->ResponseEntity.notFound().build());
-        }catch (Exception e){
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        } catch (Exception e) {
             log.error("Error updating person {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deletePerson(@RequestParam Long id) {
+        log.info("Delete person with id {}", id);
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            TransactionManager transactionManager = new TransactionManager(connection);
+
+            CrudRepository<Person> personRepository = new CrudRepository<>(connection, "person", null);
+
+            transactionManager.beginTransaction();
+            int row = personRepository.delete("DELETE FROM person WHERE id=?", id);
+            transactionManager.commitTransaction();
+
+            if (row == 0) {
+                log.warn("person request : delete failed , not found {}", id);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            log.info("delete person successful {}", id);
+            return ResponseEntity.ok("delete successful");
+        } catch (Exception e) {
+            log.error("Error deleting person {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting person");
         }
     }
 }
