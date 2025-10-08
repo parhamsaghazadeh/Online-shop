@@ -9,16 +9,10 @@ import org.springframework.beans.factory.annotation.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.ArrayList;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.stream.Collectors;
 import java.sql.Connection;
 
@@ -36,7 +30,7 @@ public class PersonController {
         log.info("Get all persons");
         ArrayList<PersonModel> personModels;
         try (Connection connection = DatabaseConnection.getConnection()) {
-            ResultSetHandler personHandler = resultSet -> new Person(
+            ResultSetHandler<Person> personHandler = resultSet -> new Person(
                     resultSet.getLong("id"),
                     resultSet.getString("name"),
                     resultSet.getString("lastname"),
@@ -47,7 +41,7 @@ public class PersonController {
                     resultSet.getLong("role_id")
             );
 
-            CrudRepository personRepository = new CrudRepository(connection, "person", personHandler);
+            CrudRepository<Person> personRepository = new CrudRepository<>(connection, "person", personHandler);
             List<Person> persons = personRepository.readAll("SELECT * FROM person ");
             personModels = persons.stream().map(converter::converterToPerson).peek(System.out::println)
                     .collect(Collectors.toCollection(ArrayList::new));
@@ -63,7 +57,7 @@ public class PersonController {
         log.info("Search person with id {}", id);
         ArrayList<PersonModel> personModels;
         try (Connection connection = DatabaseConnection.getConnection()) {
-            ResultSetHandler personHandler = resultSet -> new Person(
+            ResultSetHandler<Person> personHandler = resultSet -> new Person(
                     resultSet.getLong("id"),
                     resultSet.getString("name"),
                     resultSet.getString("lastname"),
@@ -74,13 +68,46 @@ public class PersonController {
                     resultSet.getLong("role_id")
             );
 
-            CrudRepository personRepository = new CrudRepository(connection, "person", personHandler);
+            CrudRepository<Person> personRepository = new CrudRepository<>(connection, "person", personHandler);
             List<Person> persons = personRepository.readAll("SELECT * FROM person WHERE id = ? ");
             personModels = persons.stream().map(converter::converterToPerson).
                     collect(Collectors.toCollection(ArrayList::new));
             return ResponseEntity.ok(personModels);
         } catch (Exception e) {
             log.error("Error getting persons{}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PostMapping
+    public ResponseEntity<PersonModel> addPerson(@RequestBody PersonModel personModel) {
+        log.info("Add person {}", personModel);
+        ArrayList<PersonModel> personModels;
+        try (Connection connection = DatabaseConnection.getConnection()){
+            TransactionManager transactionManager = new TransactionManager(connection);
+            ResultSetHandler<Person> personHandler;
+            personHandler = resultSet -> new Person(
+                    resultSet.getLong("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("lastname"),
+                    resultSet.getDate("birthdate"),
+                    resultSet.getString("national_id"),
+                    resultSet.getLong("user_id"),
+                    resultSet.getLong("gender_id"),
+                    resultSet.getLong("role_id")
+            );
+
+            CrudRepository<Person> personRepository = new CrudRepository<>(connection, "person", personHandler);
+
+            transactionManager.commitTransaction();
+            int value = personRepository.create("INSERT INTO person (name,lastname,birthdate,national_id,user_id,gender_id,role_id) VALUES (?,?,?,?,?,?,?)",
+                    personModel.getName(),personModel.getLastname(),personModel.getBirthdate(),personModel.getNational_id(),personModel.getUser_id(),personModel.getGender_id(),personModel.getRole_id());
+            transactionManager.beginTransaction();
+            Person person = personRepository.read("SELECT * FROM person WHERE id = ?", value);
+            personModel = converter.converterToPerson(person);
+            return ResponseEntity.ok(personModel);
+        }catch (Exception e){
+            log.error("Error adding person {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
