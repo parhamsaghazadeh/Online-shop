@@ -1,4 +1,4 @@
-package com.onlineShop.factory;
+package com.onlineShop.springBoot.example.factory;
 
 import org.springframework.boot.web.server.ConfigurableWebServerFactory;
 import org.springframework.boot.web.server.WebServerFactoryCustomizer;

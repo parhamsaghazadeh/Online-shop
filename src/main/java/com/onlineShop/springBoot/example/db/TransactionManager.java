@@ -1,4 +1,4 @@
-package com.onlineShop.db;
+package com.onlineShop.springBoot.example.db;
 import java.sql.Connection;
 import java.sql.SQLException;
 

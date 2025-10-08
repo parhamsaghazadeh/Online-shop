@@ -1,5 +1,5 @@
-package com.onlineShop.factory;
-import com.onlineShop.db.DatabaseConnection;
+package com.onlineShop.springBoot.example.factory;
+import com.onlineShop.springBoot.example.db.DatabaseConnection;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 

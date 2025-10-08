@@ -1,4 +1,4 @@
-package com.onlineShop.entity;
+package com.onlineShop.springBoot.example.entity;
 
 public class User {
     private Long id;

@@ -1,4 +1,4 @@
-package com.onlineShop.model;
+package com.onlineShop.springBoot.example.model;
 
 public class UserModel {
     private Long id;

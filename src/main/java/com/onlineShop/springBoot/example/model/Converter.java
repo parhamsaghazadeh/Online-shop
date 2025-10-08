@@ -1,6 +1,6 @@
-package com.onlineShop.model;
+package com.onlineShop.springBoot.example.model;
 
-import com.onlineShop.entity.User;
+import com.onlineShop.springBoot.example.entity.User;
 import org.springframework.stereotype.Component;
 
 @Component

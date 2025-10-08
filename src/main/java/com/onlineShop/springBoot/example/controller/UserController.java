@@ -1,19 +1,17 @@
-package com.onlineShop.controller;
+package com.onlineShop.springBoot.example.controller;
 
-import com.*;
-import com.onlineShop.factory.SBExampleApplication;
-import com.onlineShop.db.CrudRepository;
-import com.onlineShop.db.DatabaseConnection;
-import com.onlineShop.db.ResultSetHandler;
-import com.onlineShop.db.TransactionManager;
-import com.onlineShop.entity.User;
-import com.onlineShop.model.UserModel;
+import com.onlineShop.springBoot.example.db.CrudRepository;
+import com.onlineShop.springBoot.example.db.DatabaseConnection;
+import com.onlineShop.springBoot.example.db.ResultSetHandler;
+import com.onlineShop.springBoot.example.db.TransactionManager;
+import com.onlineShop.springBoot.example.entity.User;
+import com.onlineShop.springBoot.example.model.UserModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.*;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-import com.onlineShop.model.Converter;
+import com.onlineShop.springBoot.example.model.Converter;
 
 import java.sql.Connection;
 import java.sql.SQLIntegrityConstraintViolationException;
@@ -86,7 +84,7 @@ public class UserController {
             CrudRepository<User> userRepository = new CrudRepository<>(connection, "users", userHandler);
 
             transactionManager.beginTransaction();
-            int value = userRepository.create("INSERT INTO users(username,password) VALUES (?,?)", userModel.getId(), userModel.getUsername(), userModel.getPassword());
+            int value = userRepository.create("INSERT INTO users(username,password) VALUES (?,?)",userModel.getUsername(), userModel.getPassword());
             transactionManager.commitTransaction();
 
             User user = userRepository.read("SELECT * FROM users WHERE id = ?", value);

@@ -1,4 +1,4 @@
-package com.onlineShop.db;
+package com.onlineShop.springBoot.example.db;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
