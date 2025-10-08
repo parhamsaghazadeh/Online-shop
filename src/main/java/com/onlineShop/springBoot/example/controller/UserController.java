@@ -61,7 +61,7 @@ public class UserController {
 
             CrudRepository<User> userRepository = new CrudRepository<>(connection, "users", userHandler);
 
-            List<User> users = userRepository.readAll("SELECT * FROM users where username WHERE id = ?", id);
+            List<User> users = userRepository.readAll("SELECT * FROM users WHERE id = ?", id);
             userModel = users.stream().map(converter::converterToUser).peek(System.out::println)
                     .collect(Collectors.toCollection(ArrayList::new));
             return ResponseEntity.ok(userModel);
