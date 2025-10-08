@@ -1,4 +1,4 @@
-package com.onlineShop.db;
+package com.onlineShop.springBoot.example.db;
 
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,24 +23,23 @@ public class DatabaseConnection {
 
     // add Database connection
     public static Connection getConnection() {
-        if (connection != null) {
-            return connection;
+            try {
+                Connection connection = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
+                System.out.println(" Database connection successfully");
+                return connection;
+            } catch (SQLException e) {
+                System.err.println(" Database connection failed: " + e.getMessage());
+                throw new RuntimeException("Database connection failed", e);
+            }
         }
-        try {
-            connection = DriverManager.getConnection(MYSQL_URL, MYSQL_USER, MYSQL_PASSWORD);
-            System.out.println("Database connection successfully");
-        } catch (SQLException e) {
-            System.out.println("Database connection failed");
-        }
-        return connection;
-    }
+
 
     public static void initializeSchema(Connection con) {
         if (schemaInitialized) return;
         log.info("[DatabaseConnection] Initializing schema from ddl.sql..");
         try {
             InputStream ddlStream = DatabaseConnection.class.getClassLoader().getResourceAsStream("ddl.sql");
-            if (ddlStream != null) {
+            if (ddlStream == null) {
                 log.info("[DatabaseConnection] ddl.sql not found in resources");
                 return;
             }
