@@ -6,9 +6,9 @@ public class PersonModel {
     private String lastname;
     private String birthdate;
     private String national_id;
-    private int user_id;
-    private int gender_id;
-    private int role_id;
+    private long user_id;
+    private long gender_id;
+    private long role_id;
 
     public Long getId() {
         return id;
@@ -50,27 +50,27 @@ public class PersonModel {
         this.national_id = national_id;
     }
 
-    public int getUser_id() {
+    public long getUser_id() {
         return user_id;
     }
 
-    public void setUser_id(int user_id) {
+    public void setUser_id(long user_id) {
         this.user_id = user_id;
     }
 
-    public int getGender_id() {
+    public long getGender_id() {
         return gender_id;
     }
 
-    public void setGender_id(int gender_id) {
+    public void setGender_id(long gender_id) {
         this.gender_id = gender_id;
     }
 
-    public int getRole_id() {
+    public long getRole_id() {
         return role_id;
     }
 
-    public void setRole_id(int role_id) {
+    public void setRole_id(long role_id) {
         this.role_id = role_id;
     }
 }
