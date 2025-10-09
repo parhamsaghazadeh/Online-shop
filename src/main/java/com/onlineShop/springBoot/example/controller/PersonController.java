@@ -70,7 +70,7 @@ public class PersonController {
             );
 
             CrudRepository<Person> personRepository = new CrudRepository<>(connection, "person", personHandler);
-            List<Person> persons = personRepository.readAll("SELECT * FROM person WHERE id = ? ");
+            List<Person> persons = personRepository.readAll("SELECT * FROM person WHERE id = ? ",id);
             personModels = persons.stream().map(converter::converterToPerson).
                     collect(Collectors.toCollection(ArrayList::new));
             return ResponseEntity.ok(personModels);
@@ -83,7 +83,6 @@ public class PersonController {
     @PostMapping
     public ResponseEntity<PersonModel> addPerson(@RequestBody PersonModel personModel) {
         log.info("Add person {}", personModel);
-        ArrayList<PersonModel> personModels;
         try (Connection connection = DatabaseConnection.getConnection()) {
             TransactionManager transactionManager = new TransactionManager(connection);
             ResultSetHandler<Person> personHandler;
@@ -100,10 +99,10 @@ public class PersonController {
 
             CrudRepository<Person> personRepository = new CrudRepository<>(connection, "person", personHandler);
 
-            transactionManager.commitTransaction();
-            int value = personRepository.create("INSERT INTO person (name,lastname,birthdate,national_id,user_id,gender_id,role_id) VALUES (?,?,?,?,?,?,?)",
-                    personModel.getName(), personModel.getLastname(), personModel.getBirthdate(), personModel.getNational_id(), personModel.getUser_id(), personModel.getGender_id(), personModel.getRole_id());
             transactionManager.beginTransaction();
+            int value = personRepository.create("INSERT INTO person(name,lastname,birthdate,national_id,user_id,gender_id,role_id) VALUES (?,?,?,?,?,?,?)",
+                    personModel.getName(), personModel.getLastname(), personModel.getBirthdate(), personModel.getNational_id(), personModel.getUser_id(), personModel.getGender_id(), personModel.getRole_id());
+            transactionManager.commitTransaction();
             Person person = personRepository.read("SELECT * FROM person WHERE id = ?", value);
             personModel = converter.converterToPerson(person);
             return ResponseEntity.ok(personModel);
@@ -132,20 +131,19 @@ public class PersonController {
 
             CrudRepository<Person> personRepository = new CrudRepository<>(connection, "person", personHandler);
 
-            transactionManager.commitTransaction();
+            transactionManager.beginTransaction();
             int row = personRepository.update(
                     "UPDATE person SET name =? , lastname=? , birthdate=?,national_id=?,user_id=?,gender_id=?,role_id=? WHERE id = ? ",
                     personModel.getName(),
                     personModel.getLastname(),
                     personModel.getBirthdate(),
                     personModel.getNational_id(),
-                    personModel.getNational_id(),
                     personModel.getUser_id(),
                     personModel.getGender_id(),
                     personModel.getRole_id(),
                     personModel.getId()
             );
-            transactionManager.beginTransaction();
+            transactionManager.commitTransaction();
 
             if (row == 0) {
                 log.warn("person request : update failed , not found {}", personModel.getId());
