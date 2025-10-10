@@ -3,7 +3,7 @@ package com.onlineShop.springBoot.example.entity;
 import java.text.DecimalFormat;
 import java.time.Year;
 
-public class Order {
+public class Product {
     private Long id;
     private String name;
     private String brand;
@@ -14,7 +14,7 @@ public class Order {
     private DecimalFormat price;
     private Long category_id;
 
-    public Order(Long id,String name,String brand , String model , String made_in , Year year_of_manufacture , String design , DecimalFormat price, Long category_id){
+    public Product(Long id, String name, String brand , String model , String made_in , Year year_of_manufacture , String design , DecimalFormat price, Long category_id){
         this.id = id;
         this.name = name;
         this.brand = brand;

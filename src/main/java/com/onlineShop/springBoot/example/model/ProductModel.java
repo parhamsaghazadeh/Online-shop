@@ -1,6 +1,6 @@
 package com.onlineShop.springBoot.example.model;
 
-public class OderModel {
+public class ProductModel {
     private Long id;
     private String name;
     private String brand;
@@ -10,7 +10,6 @@ public class OderModel {
     private String design;
     private String price;
     private Long category_id;
-
     public Long getId() {
         return id;
     }
