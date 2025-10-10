@@ -55,4 +55,33 @@ public class ProductController {
 
     }
 
+    @GetMapping(value = "/search")
+    public ResponseEntity<List<ProductModel>> searchProducts(@RequestParam long id){
+        log.info("searchProducts {}",id);
+        ArrayList<ProductModel> productModel;
+        try(Connection connection= DatabaseConnection.getConnection()){
+            ResultSetHandler<Product> productHandler = resultSet -> new Product(
+                    resultSet.getLong("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("brand"),
+                    resultSet.getString("model"),
+                    resultSet.getString("made_id"),
+                    Year.of(resultSet.getInt("year_of_manufacture")),
+                    resultSet.getString("design"),
+                    resultSet.getBigDecimal("price"),
+                    resultSet.getLong("category_id")
+            );
+
+            CrudRepository<Product> productRepository = new CrudRepository<>(connection,"product", productHandler);
+
+            List<Product> products = productRepository.readAll("SELECT * FROM product WHERE id = ?",id);
+            productModel = products.stream().map(converter::converterToProduct)
+                    .peek(System.out::println)
+                    .collect(Collectors.toCollection(ArrayList::new));
+            return ResponseEntity.ok(productModel);
+        }catch (Exception e){
+            log.error("searchProducts{}",e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
