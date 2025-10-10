@@ -10,6 +10,8 @@ public class ProductModel {
     private String design;
     private String price;
     private Long category_id;
+
+
     public Long getId() {
         return id;
     }

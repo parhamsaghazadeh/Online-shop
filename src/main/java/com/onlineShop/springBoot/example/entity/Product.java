@@ -1,5 +1,6 @@
 package com.onlineShop.springBoot.example.entity;
 
+import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.Year;
 
@@ -11,10 +12,10 @@ public class Product {
     private String made_in;
     private Year year_of_manufacture;
     private String design;
-    private DecimalFormat price;
+    private BigDecimal price;
     private Long category_id;
 
-    public Product(Long id, String name, String brand , String model , String made_in , Year year_of_manufacture , String design , DecimalFormat price, Long category_id){
+    public Product(Long id, String name, String brand , String model , String made_in , Year year_of_manufacture , String design , BigDecimal price, Long category_id){
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -82,11 +83,11 @@ public class Product {
         this.design = design;
     }
 
-    public DecimalFormat getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 
-    public void setPrice(DecimalFormat price) {
+    public void setPrice(BigDecimal price) {
         this.price = price;
     }
 
