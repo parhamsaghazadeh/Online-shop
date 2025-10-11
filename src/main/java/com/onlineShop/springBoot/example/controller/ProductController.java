@@ -36,7 +36,7 @@ public class ProductController {
                     resultSet.getString("name"),
                     resultSet.getString("brand"),
                     resultSet.getString("model"),
-                    resultSet.getString("made_id"),
+                    resultSet.getString("made_in"),
                     Year.of(resultSet.getInt("year_of_manufacture")),
                     resultSet.getString("design"),
                     resultSet.getBigDecimal("price"),
@@ -67,7 +67,7 @@ public class ProductController {
                     resultSet.getString("name"),
                     resultSet.getString("brand"),
                     resultSet.getString("model"),
-                    resultSet.getString("made_id"),
+                    resultSet.getString("made_in"),
                     Year.of(resultSet.getInt("year_of_manufacture")),
                     resultSet.getString("design"),
                     resultSet.getBigDecimal("price"),
@@ -97,7 +97,7 @@ public class ProductController {
                     resultSet.getString("name"),
                     resultSet.getString("brand"),
                     resultSet.getString("model"),
-                    resultSet.getString("made_id"),
+                    resultSet.getString("made_in"),
                     Year.of(resultSet.getInt("year_of_manufacture")),
                     resultSet.getString("design"),
                     resultSet.getBigDecimal("price"),
@@ -107,7 +107,7 @@ public class ProductController {
             CrudRepository<Product> productRepository = new CrudRepository<>(connection, "product", productHandler);
 
             transactionManager.beginTransaction();
-            int value = productRepository.create("INSERT INTO product(name,brand,model,made_id,year_of_manufacture,design,price,category_id) VALUE (?,?,?,?,?,?,?,?)",
+            int value = productRepository.create("INSERT INTO product(name,brand,model,made_in,year_of_manufacture,design,price,category_id) VALUE (?,?,?,?,?,?,?,?)",
                     productModel.getName(), productModel.getBrand(), productModel.getModel(), productModel.getMade_in(), productModel.getYear_of_manufacture(), productModel.getDesign(), productModel.getPrice(), productModel.getCategory_id());
             transactionManager.commitTransaction();
 
@@ -130,7 +130,7 @@ public class ProductController {
                     resultSet.getString("name"),
                     resultSet.getString("brand"),
                     resultSet.getString("model"),
-                    resultSet.getString("made_id"),
+                    resultSet.getString("made_in"),
                     Year.of(resultSet.getInt("year_of_manufacture")),
                     resultSet.getString("design"),
                     resultSet.getBigDecimal("price"),
@@ -141,7 +141,7 @@ public class ProductController {
 
             transactionManager.beginTransaction();
             int row = productRepository.update(
-                    "UPDATE product SET name=?,brand=?,model=?,made_id=?,year_of_manufacture=?,design=?,price=?,category_id=? WHERE id = ? ",
+                    "UPDATE product SET name = ?,brand = ?,model = ?,made_in = ?,year_of_manufacture = ?,design = ?,price = ?,category_id = ? WHERE id = ? ",
                     productModel.getName(),
                     productModel.getBrand(),
                     productModel.getModel(),
@@ -149,7 +149,8 @@ public class ProductController {
                     productModel.getYear_of_manufacture(),
                     productModel.getDesign(),
                     productModel.getPrice(),
-                    productModel.getCategory_id()
+                    productModel.getCategory_id(),
+                    productModel.getId()
             );
             transactionManager.commitTransaction();
 

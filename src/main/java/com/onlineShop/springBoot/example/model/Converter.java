@@ -66,6 +66,7 @@ public class Converter {
     }
 
     private static final DecimalFormat df = new DecimalFormat("#,##0.00");
+
     public ProductModel converterToProduct(Product product) {
         if (product == null) {
             return null;
@@ -77,6 +78,7 @@ public class Converter {
         productModel.setModel(product.getModel());
         productModel.setMade_in(product.getMade_in());
         productModel.setYear_of_manufacture(product.getYear_of_manufacture() != null ? product.getYear_of_manufacture().toString() : null);
+        productModel.setDesign(product.getDesign());
         productModel.setPrice(df.format(product.getPrice()));
 
         productModel.setCategory_id(product.getCategory_id());
