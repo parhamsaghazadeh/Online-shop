@@ -120,4 +120,53 @@ public class ProductController {
         }
     }
 
+    @PutMapping
+    public ResponseEntity<ProductModel> updateProduct(@RequestBody ProductModel productModel) {
+        log.info("updateProduct {}", productModel);
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            TransactionManager transactionManager = new TransactionManager(connection);
+            ResultSetHandler<Product> productHandler = resultSet -> new Product(
+                    resultSet.getLong("id"),
+                    resultSet.getString("name"),
+                    resultSet.getString("brand"),
+                    resultSet.getString("model"),
+                    resultSet.getString("made_id"),
+                    Year.of(resultSet.getInt("year_of_manufacture")),
+                    resultSet.getString("design"),
+                    resultSet.getBigDecimal("price"),
+                    resultSet.getLong("category_id")
+            );
+
+            CrudRepository<Product> productRepository = new CrudRepository<>(connection, "product", productHandler);
+
+            transactionManager.beginTransaction();
+            int row = productRepository.update(
+                    "UPDATE product SET name=?,brand=?,model=?,made_id=?,year_of_manufacture=?,design=?,price=?,category_id=? WHERE id = ? ",
+                    productModel.getName(),
+                    productModel.getBrand(),
+                    productModel.getModel(),
+                    productModel.getMade_in(),
+                    productModel.getYear_of_manufacture(),
+                    productModel.getDesign(),
+                    productModel.getPrice(),
+                    productModel.getCategory_id()
+            );
+            transactionManager.commitTransaction();
+
+            if (row == 0){
+                log.warn("product request : update failed , not found with id {}", productModel.getId());
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            return Optional.ofNullable(productRepository.read("SELECT * FROM product WHERE id =?",productModel.getId()))
+                    .map(converter::converterToProduct)
+                    .map(update->{log.info("updateProduct : {}", update);
+                    return ResponseEntity.ok(update);
+                    })
+                    .orElseGet(()->ResponseEntity.notFound().build());
+        }catch (Exception e) {
+            log.error("updateProduct {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }
