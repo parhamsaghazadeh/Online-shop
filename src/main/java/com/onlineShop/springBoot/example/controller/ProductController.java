@@ -153,19 +153,45 @@ public class ProductController {
             );
             transactionManager.commitTransaction();
 
-            if (row == 0){
+            if (row == 0) {
                 log.warn("product request : update failed , not found with id {}", productModel.getId());
                 return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
             }
 
-            return Optional.ofNullable(productRepository.read("SELECT * FROM product WHERE id =?",productModel.getId()))
+            return Optional.ofNullable(productRepository.read("SELECT * FROM product WHERE id =?", productModel.getId()))
                     .map(converter::converterToProduct)
-                    .map(update->{log.info("updateProduct : {}", update);
-                    return ResponseEntity.ok(update);
+                    .map(update -> {
+                        log.info("updateProduct : {}", update);
+                        return ResponseEntity.ok(update);
                     })
-                    .orElseGet(()->ResponseEntity.notFound().build());
-        }catch (Exception e) {
+                    .orElseGet(() -> ResponseEntity.notFound().build());
+        } catch (Exception e) {
             log.error("updateProduct {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping
+    public ResponseEntity<String> deleteProduct(@RequestParam long id) {
+        log.info("deleteProduct {}", id);
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            TransactionManager transactionManager = new TransactionManager(connection);
+
+            CrudRepository<Product> productRepository = new CrudRepository<>(connection, "product", null);
+
+            transactionManager.beginTransaction();
+            int row = productRepository.delete("DELETE FROM product WHERE id =?", id);
+            transactionManager.commitTransaction();
+
+            if (row == 0) {
+                log.warn("product request : delete failed , not found with id {}", id);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).build();
+            }
+
+            log.info("product request : delete successful");
+            return ResponseEntity.ok("delete successful");
+        } catch (Exception e) {
+            log.error("deleteProduct {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
