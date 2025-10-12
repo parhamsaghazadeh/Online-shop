@@ -10,7 +10,9 @@ import com.onlineShop.springBoot.example.entity.User;
 import org.springframework.stereotype.Component;
 
 import java.sql.Date;
+import java.time.LocalDateTime;
 import java.time.Year;
+import java.time.format.DateTimeFormatter;
 
 @Component
 public class Converter {
@@ -102,6 +104,35 @@ public class Converter {
                 productModel.getDesign(),
                 price,
                 productModel.getCategory_id()
+        );
+    }
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+
+    public OrderModel converterToOrder(Order order) {
+        if (order == null) {
+            return null;
+        }
+        OrderModel orderModel = new OrderModel();
+        orderModel.setId(order.getId());
+        orderModel.setPerson_id(order.getPerson_id());
+        orderModel.setPayment_method(order.getPayment_method());
+        orderModel.setPayment_date(order.getPayment_date() != null ? order.getPayment_date().format(formatter) : null);
+        return orderModel;
+    }
+
+    public Order converterToOrderEntity(OrderModel orderModel) {
+        if (orderModel == null) {
+            return null;
+        }
+
+        LocalDateTime dateTime = orderModel.getPayment_date() != null ? LocalDateTime.parse(orderModel.getPayment_date(), formatter) : null;
+
+        return new Order(
+                orderModel.getId(),
+                orderModel.getPerson_id(),
+                orderModel.getPayment_method(),
+                dateTime
         );
     }
 
