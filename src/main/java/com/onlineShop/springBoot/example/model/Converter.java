@@ -2,6 +2,7 @@ package com.onlineShop.springBoot.example.model;
 
 import com.onlineShop.springBoot.example.entity.Person;
 import com.onlineShop.springBoot.example.entity.*;
+
 import java.text.DecimalFormat;
 import java.math.BigDecimal;
 
@@ -134,6 +135,37 @@ public class Converter {
                 orderModel.getPayment_method(),
                 dateTime
         );
+    }
+
+    public OrderItemModel converterToOrderItem(OrderItem orderItem) {
+        if (orderItem == null) {
+            return null;
+        }
+        OrderItemModel orderItemModel = new OrderItemModel();
+        orderItemModel.setId(orderItem.getId());
+        orderItemModel.setOrder_id(orderItem.getOrder_id());
+        orderItemModel.setProduct_id(orderItem.getProduct_id());
+        orderItemModel.setQuantity(orderItem.getQuantity());
+        orderItemModel.setPrice(df.format(orderItem.getPrice()));
+        return orderItemModel;
+
+    }
+
+    public OrderItem converterToOrderItemEntity(OrderItemModel orderItemModel) {
+        if (orderItemModel == null) {
+            return null;
+        }
+
+        BigDecimal price = new BigDecimal(orderItemModel.getPrice().replace(",", ""));
+
+        return new OrderItem(
+                orderItemModel.getId(),
+                orderItemModel.getOrder_id(),
+                orderItemModel.getProduct_id(),
+                orderItemModel.getQuantity(),
+                price
+        );
+
     }
 
 }
