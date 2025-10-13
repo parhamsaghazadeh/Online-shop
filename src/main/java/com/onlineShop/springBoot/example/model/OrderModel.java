@@ -1,10 +1,14 @@
 package com.onlineShop.springBoot.example.model;
 
+import java.util.List;
+
 public class OrderModel {
     private long id;
     private long person_id;
     private String payment_method;
     private String payment_date;
+
+    private List<OrderItemModel> items;
 
     public long getId() {
         return id;
@@ -36,5 +40,13 @@ public class OrderModel {
 
     public void setPayment_date(String payment_date) {
         this.payment_date = payment_date;
+    }
+
+    public List<OrderItemModel> getItems() {
+        return items;
+    }
+
+    public void setItems(List<OrderItemModel> items) {
+        this.items = items;
     }
 }
