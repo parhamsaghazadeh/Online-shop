@@ -5,6 +5,8 @@ import com.onlineShop.springBoot.example.db.TransactionManager;
 import com.onlineShop.springBoot.example.db.ResultSetHandler;
 import com.onlineShop.springBoot.example.entity.Order;
 import com.onlineShop.springBoot.example.model.Converter;
+import com.onlineShop.springBoot.example.model.OrderItemModel;
+import com.onlineShop.springBoot.example.entity.OrderItem;
 import com.onlineShop.springBoot.example.model.OrderModel;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +47,31 @@ public class OrderController {
                     orderModel.getPayment_method()
             );
 
+            CrudRepository<OrderItem> orderItemRepository = new CrudRepository<>(connection,"order_items",resultSet -> new OrderItem(
+                    resultSet.getLong("id"),
+                    resultSet.getLong("order_id"),
+                    resultSet.getLong("product_id"),
+                    resultSet.getInt("quantity"),
+                    resultSet.getBigDecimal("price")
+            ));
+
+            for (OrderItemModel item : orderModel.getItems()){
+                orderItemRepository.create(
+                        "INSERT INTO orders_item(order_id,product_id,quantity,price) VALUES (?,?,?,?)",
+                        orderId,
+                        item.getProduct_id(),
+                        item.getQuantity(),
+                        item.getPrice()
+                );
+            }
+
+            connection.commit();
+
+            log.info("Order created successfully with id: {}",orderId);
+            return ResponseEntity.ok("Order created successfully");
+        }catch (Exception e){
+            log.error("Error creating order :{}",e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error creating order");
         }
     }
 }
