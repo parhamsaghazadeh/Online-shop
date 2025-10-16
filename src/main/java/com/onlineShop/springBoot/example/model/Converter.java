@@ -3,6 +3,7 @@ package com.onlineShop.springBoot.example.model;
 import com.onlineShop.springBoot.example.entity.Person;
 import com.onlineShop.springBoot.example.entity.*;
 
+import java.sql.Time;
 import java.text.DecimalFormat;
 import java.math.BigDecimal;
 
@@ -235,19 +236,16 @@ public class Converter {
         return locationModel;
     }
 
-    public Location converterToLocation(LocationModel model) {
-        if (model == null) {
+    public Location converterToLocation(LocationModel locationModel) {
+        if (locationModel == null) {
             return null;
         }
-
-        Location location = new Location();
-        location.setId(model.getId());
-        location.setTitle(model.getTitle());
-        location.setType(model.getType());
-        location.setOpen_time(
-                model.getOpen_time() != null ? LocalTime.parse(model.getOpen_time()) : null
+        return new Location(
+                locationModel.getId(),
+                locationModel.getTitle(),
+                locationModel.getType(),
+                locationModel.getOpen_time() != null ? LocalTime.parse(locationModel.getOpen_time()) : null
         );
-        return location;
     }
 
 }
