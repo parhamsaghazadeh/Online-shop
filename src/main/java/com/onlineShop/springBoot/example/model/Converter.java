@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import java.sql.Date;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.time.Year;
 import java.time.format.DateTimeFormatter;
 
@@ -221,4 +222,32 @@ public class Converter {
                 orderLocationModel.getLocation_id()
         );
     }
+
+    public LocationModel converterToLocationModel(Location location) {
+        if (location == null) {
+            return null;
+        }
+        LocationModel locationModel = new LocationModel();
+        locationModel.setId(location.getId());
+        locationModel.setTitle(location.getTitle());
+        locationModel.setType(location.getType());
+        locationModel.setOpen_time(location.getOpen_time() != null ? location.getOpen_time().toString() : null);
+        return locationModel;
+    }
+
+    public Location converterToLocation(LocationModel model) {
+        if (model == null) {
+            return null;
+        }
+
+        Location location = new Location();
+        location.setId(model.getId());
+        location.setTitle(model.getTitle());
+        location.setType(model.getType());
+        location.setOpen_time(
+                model.getOpen_time() != null ? LocalTime.parse(model.getOpen_time()) : null
+        );
+        return location;
+    }
+
 }
