@@ -199,4 +199,26 @@ public class Converter {
         productRegistrationModel.setRegistration_date(productRegistration.getRegistration_date() != null ? productRegistration.getRegistration_date().format(formatter) : null);
         return productRegistrationModel;
     }
+
+    public OrderLocationModel converterToOrderLocation(OrderLocation orderLocation) {
+        if (orderLocation == null) {
+            return null;
+        }
+        OrderLocationModel orderLocationModel = new OrderLocationModel();
+        orderLocationModel.setId(orderLocation.getId());
+        orderLocationModel.setOrder_id(orderLocation.getOrder_id());
+        orderLocationModel.setLocation_id(orderLocation.getLocation_id());
+        return orderLocationModel;
+    }
+
+    public OrderLocation converterToOrderLocationEntity(OrderLocationModel orderLocationModel) {
+        if (orderLocationModel == null) {
+            return null;
+        }
+        return new OrderLocation(
+                orderLocationModel.getId(),
+                orderLocationModel.getOrder_id(),
+                orderLocationModel.getLocation_id()
+        );
+    }
 }
