@@ -4,8 +4,8 @@ import java.time.LocalDate;
 
 public class ProductRegistrationModel {
     private Long id;
-    private String Person_id;
-    private String Product_id;
+    private Long Person_id;
+    private Long Product_id;
     private String registration_date;
 
     public Long getId() {
@@ -16,19 +16,19 @@ public class ProductRegistrationModel {
         this.id = id;
     }
 
-    public String getPerson_id() {
+    public Long getPerson_id() {
         return Person_id;
     }
 
-    public void setPerson_id(String person_id) {
+    public void setPerson_id(Long person_id) {
         Person_id = person_id;
     }
 
-    public String getProduct_id() {
+    public Long getProduct_id() {
         return Product_id;
     }
 
-    public void setProduct_id(String product_id) {
+    public void setProduct_id(Long product_id) {
         Product_id = product_id;
     }
 
