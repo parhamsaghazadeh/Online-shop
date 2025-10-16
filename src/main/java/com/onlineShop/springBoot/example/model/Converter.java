@@ -168,4 +168,24 @@ public class Converter {
 
     }
 
+    public CategoryModel converterToCategory(Category category) {
+        if (category == null) {
+            return null;
+        }
+        CategoryModel categoryModel = new CategoryModel();
+        categoryModel.setId(category.getId());
+        categoryModel.setTitle(category.getTitle());
+        return categoryModel;
+    }
+
+    public Category converterToCategoryEntity(CategoryModel categoryModel) {
+        if (categoryModel == null) {
+            return null;
+        }
+        return new Category(
+                categoryModel.getId(),
+                categoryModel.getTitle()
+        );
+    }
+
 }
