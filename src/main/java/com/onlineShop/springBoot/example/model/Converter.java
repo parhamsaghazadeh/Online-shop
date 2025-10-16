@@ -188,4 +188,15 @@ public class Converter {
         );
     }
 
+    public ProductRegistrationModel converterToProductRegistrationModel(ProductRegistration productRegistration) {
+        if (productRegistration == null) {
+            return null;
+        }
+        ProductRegistrationModel productRegistrationModel = new ProductRegistrationModel();
+        productRegistrationModel.setId(productRegistration.getId());
+        productRegistrationModel.setPerson_id(productRegistration.getPerson_id());
+        productRegistrationModel.setProduct_id(productRegistration.getProduct_id());
+        productRegistrationModel.setRegistration_date(productRegistration.getRegistration_date() != null ? productRegistration.getRegistration_date().format(formatter) : null);
+        return productRegistrationModel;
+    }
 }
