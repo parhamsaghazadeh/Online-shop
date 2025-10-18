@@ -18,6 +18,10 @@ public class Order {
         this.payment_date = payment_date;
     }
 
+    public Order() {
+
+    }
+
     public long getId() {
         return id;
     }
