@@ -15,6 +15,10 @@ public class Location {
         this.open_time = open_time;
     }
 
+    public Location() {
+
+    }
+
     public Long getId() {
         return id;
     }
