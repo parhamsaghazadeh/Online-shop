@@ -1,9 +1,12 @@
 package com.onlineShop.springBoot.example.entity;
 
+import lombok.Data;
+
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.time.Year;
 
+@Data
 public class Product {
     private Long id;
     private String name;
@@ -25,6 +28,10 @@ public class Product {
         this.design = design;
         this.price = price;
         this.category_id = category_id;
+    }
+
+    public Product() {
+
     }
 
     public Long getId() {
