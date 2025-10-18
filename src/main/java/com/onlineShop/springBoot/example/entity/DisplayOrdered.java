@@ -1,7 +1,9 @@
 package com.onlineShop.springBoot.example.entity;
 
-import java.util.List;
+import lombok.Data;
 
+import java.util.List;
+@Data
 public class DisplayOrdered {
     private Product products;
     private Category categories;
@@ -21,6 +23,10 @@ public class DisplayOrdered {
         this.persons = persons;
         this.orderLocations = orderLocations;
         this.locations = locations;
+    }
+
+    public DisplayOrdered() {
+
     }
 
     public Product getProducts() {
