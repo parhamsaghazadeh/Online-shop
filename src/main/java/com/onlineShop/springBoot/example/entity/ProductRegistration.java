@@ -15,6 +15,10 @@ public class ProductRegistration {
         this.registration_date = registration_date;
     }
 
+    public ProductRegistration() {
+
+    }
+
     public Long getId() {
         return id;
     }
