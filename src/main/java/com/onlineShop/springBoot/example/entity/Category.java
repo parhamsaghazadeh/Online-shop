@@ -9,6 +9,10 @@ public class Category {
         this.title = title;
     }
 
+    public Category() {
+
+    }
+
     public Long getId() {
         return id;
     }
