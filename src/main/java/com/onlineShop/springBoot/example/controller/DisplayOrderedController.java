@@ -19,6 +19,7 @@ public class DisplayOrderedController {
     @Autowired
     private Converter converter;
 
+    @Autowired
     private Service service;
     @GetMapping
     public ResponseEntity<List<DisplayOrdered>> getDisplayOrdered(){
