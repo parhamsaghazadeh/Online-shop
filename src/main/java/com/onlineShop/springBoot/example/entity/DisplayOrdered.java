@@ -2,7 +2,6 @@ package com.onlineShop.springBoot.example.entity;
 
 import lombok.Data;
 
-import java.util.List;
 @Data
 public class DisplayOrdered {
     private Product products;
