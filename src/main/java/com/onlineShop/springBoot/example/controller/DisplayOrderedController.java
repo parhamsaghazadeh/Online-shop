@@ -5,6 +5,7 @@ import com.onlineShop.springBoot.example.service.Service;
 import com.onlineShop.springBoot.example.model.Converter;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -26,6 +27,17 @@ public class DisplayOrderedController {
         log.info("getDisplayOrdered()");
         return ResponseEntity.ok(service.displayOrderedList());
 
+    }
+
+    @GetMapping(value = "/searchByPerson")
+    public ResponseEntity<List<DisplayOrdered>> getDisplayOrderedByPerson(@RequestParam String name , @RequestParam String lastName){
+
+        List<DisplayOrdered> displayOrderedList = service.searchOrderedByPerson(name, lastName);
+
+        if(displayOrderedList.isEmpty()){
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(List.of());
+        }
+        return ResponseEntity.ok(displayOrderedList);
     }
 
 }
