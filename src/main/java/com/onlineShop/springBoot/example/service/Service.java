@@ -104,11 +104,51 @@ public class Service {
                     "          join person p on o.person_id = p.id\n" +
                     "          join order_location lo on o.id = lo.order_id\n" +
                     "          join location l on lo.location_id = l.id;");
-
             return displayOrderedList;
         }catch (SQLException e){
             log.error("displayOrderedList{}", e.getMessage());
             return Collections.emptyList();
+        }
+    }
+    public List<DisplayOrdered> searchOrderedByPerson(String name , String lastname){
+        log.info("searchOrderedByPerson name={} lastname={} ", name, lastname);
+        try (Connection connection = DatabaseConnection.getConnection()){
+            CrudRepository<DisplayOrdered> displayOrderedRepository = new CrudRepository<>(connection,"product", displayOrderedHandler);
+
+            List<DisplayOrdered> displayOrderedList = displayOrderedRepository.readAll(
+                    "SELECT p.name                 AS person_name,\n" +
+                            "       p.lastname             AS person_lastname,\n" +
+                            "       p.national_id          AS person_national_id,\n" +
+                            "       c.title                AS category_title,\n" +
+                            "       po.name                AS product_name,\n" +
+                            "       po.brand               AS product_brand,\n" +
+                            "       po.model               AS product_model,\n" +
+                            "       po.made_in             AS product_made_in,\n" +
+                            "       po.year_of_manufacture AS product_year,\n" +
+                            "       po.design              AS product_design,\n" +
+                            "       po.price               AS product_price,\n" +
+                            "       o.payment_method       AS order_payment_method,\n" +
+                            "       o.payment_date         AS order_payment_date,\n" +
+                            "       orr.quantity           AS order_quantity,\n" +
+                            "       orr.price              AS order_price,\n" +
+                            "       pr.registration_date   AS product_registration_date,\n" +
+                            "       l.title                AS location_title,\n" +
+                            "       l.type                 AS location_type,\n" +
+                            "       l.open_time            AS location_open_time\n" +
+                            "From product po\n" +
+                            "         join categories c on po.category_id = c.id\n" +
+                            "         join orders_item orr on po.id = orr.product_id\n" +
+                            "         join product_registration pr on po.id = pr.product_id\n" +
+                            "         join orders o on orr.order_id = o.id\n" +
+                            "         join person p on o.person_id = p.id\n" +
+                            "         join order_location lo on o.id = lo.order_id\n" +
+                            "         join location l on lo.location_id = l.id\n" +
+                            "where p.name = ? and p.lastname =?",name,lastname
+            );
+            return displayOrderedList;
+        }catch (Exception e){
+            log.error("searchOrderedByPerson{}", e.getMessage());
+            return List.of();
         }
     }
 
