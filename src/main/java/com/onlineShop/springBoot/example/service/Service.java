@@ -17,7 +17,6 @@ import java.sql.SQLException;
 import java.util.Collections;
 
 
-
 @Slf4j
 @Component
 public class Service {
@@ -72,10 +71,11 @@ public class Service {
 
     };
 
-    public List<DisplayOrdered> displayOrderedList(){
+    // display order
+    public List<DisplayOrdered> displayOrderedList() {
         log.info("displayOrderedList");
-        try (Connection connection = DatabaseConnection.getConnection()){
-            CrudRepository<DisplayOrdered> displayOrderedRepository = new CrudRepository<>(connection,"product", displayOrderedHandler);
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            CrudRepository<DisplayOrdered> displayOrderedRepository = new CrudRepository<>(connection, "product", displayOrderedHandler);
 
             List<DisplayOrdered> displayOrderedList = displayOrderedRepository.readAll("SELECT p.name                 AS person_name,\n" +
                     "       p.lastname             AS person_lastname,\n" +
@@ -105,15 +105,17 @@ public class Service {
                     "          join order_location lo on o.id = lo.order_id\n" +
                     "          join location l on lo.location_id = l.id;");
             return displayOrderedList;
-        }catch (SQLException e){
+        } catch (SQLException e) {
             log.error("displayOrderedList{}", e.getMessage());
             return Collections.emptyList();
         }
     }
-    public List<DisplayOrdered> searchOrderedByPerson(String name , String lastname){
+
+    // display order by name and lastname
+    public List<DisplayOrdered> searchOrderedByPerson(String name, String lastname) {
         log.info("searchOrderedByPerson name={} lastname={} ", name, lastname);
-        try (Connection connection = DatabaseConnection.getConnection()){
-            CrudRepository<DisplayOrdered> displayOrderedRepository = new CrudRepository<>(connection,"product", displayOrderedHandler);
+        try (Connection connection = DatabaseConnection.getConnection()) {
+            CrudRepository<DisplayOrdered> displayOrderedRepository = new CrudRepository<>(connection, "product", displayOrderedHandler);
 
             List<DisplayOrdered> displayOrderedList = displayOrderedRepository.readAll(
                     "SELECT p.name                 AS person_name,\n" +
@@ -143,10 +145,10 @@ public class Service {
                             "         join person p on o.person_id = p.id\n" +
                             "         join order_location lo on o.id = lo.order_id\n" +
                             "         join location l on lo.location_id = l.id\n" +
-                            "where p.name = ? and p.lastname =?",name,lastname
+                            "where p.name = ? and p.lastname =?", name, lastname
             );
             return displayOrderedList;
-        }catch (Exception e){
+        } catch (Exception e) {
             log.error("searchOrderedByPerson{}", e.getMessage());
             return List.of();
         }

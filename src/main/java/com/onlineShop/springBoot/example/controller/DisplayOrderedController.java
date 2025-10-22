@@ -18,23 +18,23 @@ import java.util.List;
 @Slf4j
 public class DisplayOrderedController {
     @Autowired
-    private Converter converter;
-
-    @Autowired
     private Service service;
+
+    // display order
     @GetMapping
-    public ResponseEntity<List<DisplayOrdered>> getDisplayOrdered(){
+    public ResponseEntity<List<DisplayOrdered>> getDisplayOrdered() {
         log.info("getDisplayOrdered()");
         return ResponseEntity.ok(service.displayOrderedList());
 
     }
 
+    // display order by name and lastname
     @GetMapping(value = "/searchByPerson")
-    public ResponseEntity<List<DisplayOrdered>> getDisplayOrderedByPerson(@RequestParam String name , @RequestParam String lastName){
+    public ResponseEntity<List<DisplayOrdered>> getDisplayOrderedByPerson(@RequestParam String name, @RequestParam String lastName) {
 
         List<DisplayOrdered> displayOrderedList = service.searchOrderedByPerson(name, lastName);
 
-        if(displayOrderedList.isEmpty()){
+        if (displayOrderedList.isEmpty()) {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body(List.of());
         }
         return ResponseEntity.ok(displayOrderedList);
