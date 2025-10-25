@@ -26,6 +26,7 @@ public class PersonController {
     @Autowired
     private Converter converter;
 
+    //display all person
     @GetMapping
     public ResponseEntity<List<PersonModel>> personAll() {
         log.info("Get all persons");
@@ -53,6 +54,7 @@ public class PersonController {
         }
     }
 
+    // search person with id
     @GetMapping(value = "/search")
     public ResponseEntity<List<PersonModel>> searchPerson(@RequestParam Long id) {
         log.info("Search person with id {}", id);
@@ -70,7 +72,7 @@ public class PersonController {
             );
 
             CrudRepository<Person> personRepository = new CrudRepository<>(connection, "person", personHandler);
-            List<Person> persons = personRepository.readAll("SELECT * FROM person WHERE id = ? ",id);
+            List<Person> persons = personRepository.readAll("SELECT * FROM person WHERE id = ? ", id);
             personModels = persons.stream().map(converter::converterToPerson).
                     collect(Collectors.toCollection(ArrayList::new));
             return ResponseEntity.ok(personModels);
@@ -80,6 +82,7 @@ public class PersonController {
         }
     }
 
+    // add person
     @PostMapping
     public ResponseEntity<PersonModel> addPerson(@RequestBody PersonModel personModel) {
         log.info("Add person {}", personModel);
@@ -112,6 +115,7 @@ public class PersonController {
         }
     }
 
+    //update Information person
     @PutMapping
     public ResponseEntity<PersonModel> updatePerson(@RequestBody PersonModel personModel) {
         log.info("Update person {}", personModel);
@@ -163,6 +167,7 @@ public class PersonController {
         }
     }
 
+    // delete information person
     @DeleteMapping
     public ResponseEntity<String> deletePerson(@RequestParam Long id) {
         log.info("Delete person with id {}", id);

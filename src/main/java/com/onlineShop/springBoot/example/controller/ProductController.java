@@ -26,6 +26,7 @@ public class ProductController {
     @Autowired
     private Converter converter;
 
+    // display all product
     @GetMapping
     public ResponseEntity<List<ProductModel>> getAllProducts() {
         log.info("getAllProducts");
@@ -57,6 +58,7 @@ public class ProductController {
 
     }
 
+    // search product with id
     @GetMapping(value = "/search")
     public ResponseEntity<List<ProductModel>> searchProducts(@RequestParam long id) {
         log.info("searchProducts {}", id);
@@ -87,6 +89,7 @@ public class ProductController {
         }
     }
 
+    // add information product
     @PostMapping
     public ResponseEntity<ProductModel> addProduct(@RequestBody ProductModel productModel) {
         log.info("addProduct {}", productModel);
@@ -120,6 +123,7 @@ public class ProductController {
         }
     }
 
+    // update information product
     @PutMapping
     public ResponseEntity<ProductModel> updateProduct(@RequestBody ProductModel productModel) {
         log.info("updateProduct {}", productModel);
@@ -172,6 +176,7 @@ public class ProductController {
         }
     }
 
+    // delete information product
     @DeleteMapping
     public ResponseEntity<String> deleteProduct(@RequestParam long id) {
         log.info("deleteProduct {}", id);
