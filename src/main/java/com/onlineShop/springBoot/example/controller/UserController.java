@@ -72,7 +72,16 @@ public class UserController {
     }
 
     @PostMapping
-    public ResponseEntity<UserModel> createUser(@RequestBody UserModel userModel) {
+    public ResponseEntity<String> createUser(@RequestBody UserModel userModel) {
+    String password = userModel.getPassword();
+
+            String passwordRegex = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$";
+
+            if (password == null || !password.matches(passwordRegex)) {
+                return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("رمز عبور باید حداقل ۸ کاراکتر، شامل حروف بزرگ، حروف کوچک و عدد باشد");
+            }
+
+
         try (Connection connection = DatabaseConnection.getConnection()) {
             TransactionManager transactionManager = new TransactionManager(connection);
             ResultSetHandler<User> userHandler = resultSet -> new User(
@@ -90,7 +99,7 @@ public class UserController {
             User user = userRepository.read("SELECT * FROM users WHERE id = ?", value);
             userModel = converter.converterToUser(user);
             log.info("createUser {}", userModel);
-            return ResponseEntity.ok(userModel);
+            return ResponseEntity.ok("success");
         } catch (Exception e) {
             if (e instanceof SQLIntegrityConstraintViolationException) {
                 return ResponseEntity.status(HttpStatus.CONFLICT).build();
