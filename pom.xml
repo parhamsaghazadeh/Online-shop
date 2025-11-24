@@ -53,8 +53,11 @@
             <version>22.0.5</version>
         </dependency>
 
-
-
+        <!-- spring security + OAuth2 Resource Server -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-parent</artifactId>
+        </dependency>
 
     </dependencies>
 
