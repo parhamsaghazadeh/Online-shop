@@ -13,7 +13,7 @@ public class LoginService {
     public AccessTokenResponse login (USerModel loginUser) {
         try {
             Keycloak keycloak = KeycloakBuilder.builder()
-                    .serverUrl("http://localhost:8081")
+                    .serverUrl("http://localhost:8180")
                     .realm("my-realm")
                     .clientId("my-backend")
                     .grantType(loginUser.getUsername())
