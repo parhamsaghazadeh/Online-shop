@@ -20,11 +20,11 @@ import java.util.Map;
 public class RegisterService {
 
     private final Keycloak keycloak = KeycloakBuilder.builder()
-            .serverUrl("http://localhost:8081")
+            .serverUrl("http://localhost:8180")
             .realm("master")
             .clientId("admin-cli")
             .username("admin")
-            .password("admin")
+            .password("admin123")
             .grantType(OAuth2Constants.PASSWORD)
             .build();
 
@@ -33,12 +33,13 @@ public class RegisterService {
         UserRepresentation user = new UserRepresentation();
         user.setUsername(registerModel.getUsername());
         user.setEnabled(true);
+        user.setFirstName(registerModel.getFirstName());
+        user.setLastName(registerModel.getLastName());
 
         //اطلعات اضافه
         Map<String, List<String>> roles = new HashMap<>();
         roles.put("firstname", List.of(registerModel.getFirstName()));
         roles.put("lastname", List.of(registerModel.getLastName()));
-        roles.put("email", List.of(registerModel.getEmail()));
         user.setAttributes(roles);
 
         CredentialRepresentation credential = new CredentialRepresentation();
