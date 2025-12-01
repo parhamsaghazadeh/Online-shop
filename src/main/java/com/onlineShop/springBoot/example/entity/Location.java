@@ -1,8 +1,14 @@
 package com.onlineShop.springBoot.example.entity;
 
+import jakarta.persistence.*;
+
 import java.time.LocalTime;
 
+@Entity
+@Table( name = "location")
 public class Location {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String title;
     private String type;
