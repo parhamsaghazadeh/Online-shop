@@ -8,11 +8,7 @@ import java.text.DecimalFormat;
 import java.time.Year;
 
 @Data
-@Entity
-@Table (name = "product")
 public class Product {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     private String name;
     private String brand;
@@ -21,11 +17,9 @@ public class Product {
     private Year year_of_manufacture;
     private String design;
     private BigDecimal price;
-    @ManyToOne
-    @JoinColumn(name = "category_id")
-    private Category category_id;
+    private Long category_id;
 
-    public Product(Long id, String name, String brand , String model , String made_in , Year year_of_manufacture , String design , BigDecimal price, Category category_id){
+    public Product(Long id, String name, String brand , String model , String made_in , Year year_of_manufacture , String design , BigDecimal price, Long category_id){
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -105,11 +99,11 @@ public class Product {
         this.price = price;
     }
 
-    public Category getCategory_id() {
+    public Long getCategory_id() {
         return category_id;
     }
 
-    public void setCategory_id(Category category_id) {
+    public void setCategory_id(long category_id) {
         this.category_id = category_id;
     }
 }

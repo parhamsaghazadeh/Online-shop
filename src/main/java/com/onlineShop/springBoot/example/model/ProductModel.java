@@ -1,5 +1,7 @@
 package com.onlineShop.springBoot.example.model;
 
+import com.onlineShop.springBoot.example.entity.Category;
+
 public class ProductModel {
     private Long id;
     private String name;
