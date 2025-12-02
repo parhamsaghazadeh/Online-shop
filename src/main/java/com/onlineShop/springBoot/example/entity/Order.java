@@ -1,8 +1,14 @@
 package com.onlineShop.springBoot.example.entity;
+import jakarta.persistence.*;
+
 import java.time.LocalDateTime;
 import java.util.List;
 
+@Entity
+@Table(name = "orders")
 public class Order {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private long person_id;
     private String payment_method;
