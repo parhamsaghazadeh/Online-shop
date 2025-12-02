@@ -1,14 +1,24 @@
 package com.onlineShop.springBoot.example.entity;
+import jakarta.persistence.*;
+
 import java.math.BigDecimal;
 
+@Entity
+@Table(name = "orders_item")
 public class OrderItem {
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    private Long order_id;
-    private Long product_id;
+    @ManyToOne
+    @JoinColumn(name = "order_id")
+    private Order order_id;
+    @ManyToOne
+    @JoinColumn(name = "product_id")
+    private Product product_id;
     private Integer quantity;
     private BigDecimal price;
 
-    public OrderItem(Long id, Long order_id, Long product_id, Integer quantity, BigDecimal price) {
+    public OrderItem(Long id, Order order_id, Product product_id, Integer quantity, BigDecimal price) {
         this.id = id;
         this.order_id = order_id;
         this.product_id = product_id;
@@ -28,19 +38,19 @@ public class OrderItem {
         this.id = id;
     }
 
-    public Long getOrder_id() {
+    public Order getOrder_id() {
         return order_id;
     }
 
-    public void setOrder_id(Long order_id) {
+    public void setOrder_id(Order order_id) {
         this.order_id = order_id;
     }
 
-    public Long getProduct_id() {
+    public Product getProduct_id() {
         return product_id;
     }
 
-    public void setProduct_id(Long product_id) {
+    public void setProduct_id(Product product_id) {
         this.product_id = product_id;
     }
 
