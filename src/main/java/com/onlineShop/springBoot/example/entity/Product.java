@@ -4,8 +4,6 @@ import jakarta.persistence.*;
 import lombok.Data;
 
 import java.math.BigDecimal;
-import java.text.DecimalFormat;
-import java.time.Year;
 
 @Data
 @Entity
@@ -18,14 +16,14 @@ public class Product {
     private String brand;
     private String model;
     private String made_in;
-    private Year year_of_manufacture;
+    private int  year_of_manufacture;
     private String design;
     private BigDecimal price;
     @ManyToOne
     @JoinColumn ( name = "category_id")
-    private Category category_id;
+    private Category category;
 
-    public Product(Long id, String name, String brand , String model , String made_in , Year year_of_manufacture , String design , BigDecimal price, Category category_id){
+    public Product(Long id, String name, String brand , String model , String made_in , int year_of_manufacture , String design , BigDecimal price, Category category){
         this.id = id;
         this.name = name;
         this.brand = brand;
@@ -34,7 +32,7 @@ public class Product {
         this.year_of_manufacture = year_of_manufacture;
         this.design = design;
         this.price = price;
-        this.category_id = category_id;
+        this.category = category;
     }
 
     public Product() {
@@ -81,11 +79,11 @@ public class Product {
         this.made_in = made_in;
     }
 
-    public Year getYear_of_manufacture() {
+    public int getYear_of_manufacture() {
         return year_of_manufacture;
     }
 
-    public void setYear_of_manufacture(Year year_of_manufacture) {
+    public void setYear_of_manufacture(int year_of_manufacture) {
         this.year_of_manufacture = year_of_manufacture;
     }
 
@@ -105,11 +103,11 @@ public class Product {
         this.price = price;
     }
 
-    public Category getCategory_id() {
-        return category_id;
+    public Category getCategory() {
+        return category;
     }
 
-    public void setCategory_id(Category category_id) {
-        this.category_id = category_id;
+    public void setCategory(Category category_id) {
+        this.category = category_id;
     }
 }
