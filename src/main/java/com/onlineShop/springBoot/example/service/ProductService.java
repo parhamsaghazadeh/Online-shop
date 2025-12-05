@@ -37,4 +37,25 @@ public class ProductService {
         return productRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("product not found"));
     }
+
+    public void  DeleteProduct(Long id){
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("product not found"));
+        productRepository.delete(product);
+    }
+
+    public Product updateProduct(Product UpdateProduct, Long id){
+        Product product = productRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("product not found"));
+        product.setName(UpdateProduct.getName());
+        product.setBrand(UpdateProduct.getBrand());
+        product.setModel(UpdateProduct.getModel());
+        product.setMade_in(UpdateProduct.getMade_in());
+        product.setYear_of_manufacture(UpdateProduct.getYear_of_manufacture());
+        product.setDesign(UpdateProduct.getDesign());
+        product.setPrice(UpdateProduct.getPrice());
+        product.setCategory(UpdateProduct.getCategory());
+        return productRepository.save(product);
+    }
+
 }
